@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Water Segmentation AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+    <h1>🌊 Water Segmentation AI</h1>
+
+    <div id="drop-zone" class="drop-zone">
+        <p>Drag & Drop .tif file here</p>
+        <span>or</span>
+        <input type="file" id="file-input" accept=".tif" hidden>
+        <button onclick="document.getElementById('file-input').click()">Browse File</button>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+
+    <div class="results">
+        <div class="image-box">
+            <h3>Original</h3>
+            <img id="original-image">
+        </div>
+
+        <div class="image-box">
+            <h3>Prediction Overlay</h3>
+            <img id="result-image">
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

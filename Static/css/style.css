@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    z-index: -1;
+}
+
+.container {
+    width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+}
+
+.drop-zone {
+    border: 2px dashed white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.drop-zone:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    color: #1e3c72;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.results {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.image-box {
+    width: 45%;
+}
+
+.image-box img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.spinner {
+    display: none;
+    margin: 20px auto;
+    border: 6px solid rgba(255,255,255,0.3);
+    border-top: 6px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}

@@ -4,6 +4,7 @@ import rasterio
 import io
 
 from flask import Flask, request, render_template, send_file
+import base64
 from PIL import Image
 from model import load_model
 
@@ -44,9 +45,6 @@ def normalize_per_band(img, band_mins, band_maxs):
 def home():
     return render_template("index.html")
 
-
-import base64
-
 @app.route("/predict", methods=["POST"])
 def predict():
 
@@ -60,13 +58,31 @@ def predict():
         img = src.read()  # (bands, H, W)
         img = np.transpose(img, (1, 2, 0)).astype(np.float32)
 
+        # --------------------------
+        # COMPUTE WATER INDICES
+        # --------------------------
+
+        GREEN = img[:, :, 2]
+        NIR   = img[:, :, 4]
+        SWIR1 = img[:, :, 5]
+        SWIR2 = img[:, :, 6]
+
+        ndwi = (GREEN - NIR) / (GREEN + NIR + 1e-8)
+        mndwi = (GREEN - SWIR1) / (GREEN + SWIR1 + 1e-8)
+        awei = 4*(GREEN - SWIR1) - (0.25*NIR + 2.75*SWIR2)
+
+        indices = np.stack([ndwi, mndwi, awei], axis=-1)
+
+        # Add indices to image
+        img = np.concatenate([img, indices], axis=-1)
+
     if img.shape[0] != 128 or img.shape[1] != 128:
         return {"error": "Invalid image size (Expected 128x128)"}, 400
 
     # --------------------------
     # ORIGINAL RGB CONVERSION
     # --------------------------
-    rgb = img[:, :, :3]  # First 3 bands
+    rgb = img[:, :, :3]
 
     rgb = (rgb - rgb.min()) / (rgb.max() - rgb.min() + 1e-8)
     rgb = (rgb * 255).astype(np.uint8)
@@ -115,3 +131,4 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    # app.run(host="0.0.0.0", port=5000)

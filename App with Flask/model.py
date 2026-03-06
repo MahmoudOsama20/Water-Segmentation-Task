@@ -15,7 +15,7 @@ def load_model(model_path="water_model.pth"):
     model = smp.DeepLabV3(
         encoder_name="efficientnet-b7",
         encoder_weights=None,
-        in_channels=12,
+        in_channels=15,
         classes=1
     )
 
